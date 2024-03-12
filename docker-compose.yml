@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "5001:5000"
+    environment:
+      - DB_URL=mongodb://database/SmartSpace
+      - FLASK_APP=app.py
+      - FLASK_DEBUG=1
+      - FLASK_ENV=development
+    volumes:
+      - ./backend:/app
+  database:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - database-data:/data/db
+
+volumes:
+  database-data:

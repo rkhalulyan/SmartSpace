@@ -10,7 +10,8 @@ services:
       - FLASK_DEBUG=1
       - FLASK_ENV=development
     volumes:
-      - ./backend:/app
+      - ./backend:/backend
+      - ./frontend:/frontend
   database:
     image: mongo:latest
     ports:

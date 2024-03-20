@@ -1,0 +1,80 @@
+/* Center the entire page content */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #fff;
+    font-family: Arial, sans-serif;
+    font-size: 18px; /* Increased font size for the entire page */
+}
+
+.container {
+    text-align: center; /* Center text inside the container */
+}
+
+.login-container {
+    margin-top: 20px;
+    max-width: 400px; /* Set a maximum width for the login container */
+    padding: 30px; /* Increased padding for the login container */
+    border-radius: 10px;
+    background-color: #f0f0f0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.pin-inputs {
+    margin-top: 20px;
+}
+
+.pin-input {
+    width: 50px; /* Increased width of input boxes */
+    height: 50px; /* Increased height of input boxes */
+    font-size: 24px; /* Increased font size for input boxes */
+    text-align: center;
+    margin-right: 10px; /* Increased margin between input boxes */
+}
+
+/* Additional styles for the "Or" text container */
+.or-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px; /* Adjust the margin as needed */
+}
+
+.or-text {
+    font-size: 20px; /* Adjust the font size as needed */
+    margin: 0;
+    padding: 0;
+}
+
+
+.button {
+    margin-top: 30px; /* Increased margin above the button */
+    padding: 15px 30px; /* Increased padding for the button */
+    font-size: 20px; /* Increased font size for the button */
+    background-color: #3498db; /* Blue background color */
+    color: #fff; /* White text color */
+    border: none;
+    border-radius: 8px; /* Increased border radius for smoother corners */
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth transition on hover */
+}
+
+.button:hover {
+    background-color: #2980b9; /* Darker blue background color on hover */
+}
+
+/* Added styles for the submit button container */
+.submit-container {
+    margin-top: 20px; /* Adjust top margin as needed */
+}
+
+.username-field {
+    width: calc(100% - 40px); /* Calculate the width to be 100% minus the space for the pin-inputs */
+    height: 50px;
+    font-size: 24px;
+    text-align: center;
+    margin-right: 10px;
+    margin-left: 10px; /* Add margin from the left */
+}

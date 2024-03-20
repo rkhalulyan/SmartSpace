@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Locker Reservation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <!-- Main container for form and lockers -->
+    <div class="main-container">
+    
+        <!-- Container for the locker search form -->
+        <div class="locker-search-container">
+            <h3>Reserve a Locker</h3>
+            <div class="form-fields">
+                <label for="lockerNo">Locker No</label>
+                <select id="lockerNo">
+                    <option value="1">1</option>
+                    <option value="1">2</option>
+                    <option value="1">3</option>
+                    <option value="1">4</option>
+                    <option value="1">5</option>
+                    <option value="1">6</option>
+                    <option value="1">7</option>
+                    <option value="1">8</option>
+                </select>
+                <button id="reserve">Reserve</button>
+
+                <label for="location">Your Lockers</label>
+                <select id="lockerNo">Your Lockers</select>
+
+                <button id="checkout">Check-Out</button>
+
+                <div class="available">
+                    <label>Available</label>
+                </div>
+
+                <div class="occupied">
+                    <label>Occupied</label>
+                </div>
+
+                <div class="userLocker">
+                    <label>Your Locker</label>
+                </div>
+
+            </div>
+        </div>
+        
+        <!-- Container for the locker display -->
+        <div class="locker-grid">
+            <!-- Each locker will be a div inside this grid -->
+            <div class="locker" id="locker1">Locker A-001</div>
+            <div class="locker" id="locker2">Locker A-002</div>
+            <div class="locker" id="locker3">Locker A-003</div>
+            <div class="locker" id="locker4">Locker A-004</div>
+            <div class="locker" id="locker5">Locker A-005</div>
+            <div class="locker" id="locker6">Locker A-006</div>
+            <div class="locker" id="locker6">Locker A-007</div>
+            <div class="locker" id="locker6">Locker A-008</div>
+        </div>
+    </div>
+</body>
+</html>

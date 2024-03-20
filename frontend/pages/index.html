@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SmartSpace Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Smart Space</h1>
+        <div class="login-container">
+            <h2>Type a Four Digit Pin to Login</h2>
+            <div class="pin-inputs">
+                <input type="text" maxlength="1" class="pin-input" autofocus oninput="moveFocus(this, event)">
+                <input type="text" maxlength="1" class="pin-input" oninput="moveFocus(this, event)">
+                <input type="text" maxlength="1" class="pin-input" oninput="moveFocus(this, event)">
+                <input type="text" maxlength="1" class="pin-input" oninput="moveFocus(this, event)">
+            </div>
+            <div class="or-container">
+                <p class="or-text">Or</p>
+            </div>
+            <form action="signup" method="GET">
+                <button type="submit" class="button">Create Account</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        function moveFocus(currentElement, event) {
+            if (event.inputType === 'deleteContentBackward' && currentElement.previousElementSibling) {
+                currentElement.previousElementSibling.focus();
+            } else if (currentElement.value.length === 1 && currentElement.nextElementSibling) {
+                currentElement.nextElementSibling.focus();
+            }
+        }
+    </script>
+</body>
+</html>

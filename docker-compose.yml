@@ -12,12 +12,14 @@ services:
     volumes:
       - ./backend:/backend
       - ./frontend:/frontend
+
   database:
     image: mongo:latest
     ports:
       - "27017:27017"
     volumes:
       - database-data:/data/db
+      - ./mongo-init:/docker-entrypoint-initdb.d
 
 volumes:
   database-data:

@@ -81,7 +81,7 @@ button.ghost {
 
 /* Added styles for the submit button container */
 .submit-container {
-    margin-top: 20px; /* Adjust top margin as needed */
+    margin-top: 10px; /* Adjust top margin as needed */
 }
 
 .username-field {
@@ -92,6 +92,35 @@ button.ghost {
     margin-right: 10px;
     margin-left: 10px; /* Add margin from the left */
 }
+
+.back-link {
+    display: block; /* Make the link take its own line */
+    margin-top: 15px; /* Space between the submit button and the link */
+    color: #000; /* Make the link color black */
+    text-decoration: none; /* Remove underline from link */
+    font-size: 16px; /* Smaller font size than the button text */
+}
+
+.back-link:hover {
+    text-decoration: underline; /* Add underline on hover to indicate it's clickable */
+}
+
+.full-name-field {
+    width: calc(100% - 40px); /* Adjust width as needed */
+    height: 50px; /* Match height with other input fields */
+    font-size: 24px; /* Match font size with other input fields */
+    text-align: center; /* Center text input */
+    margin-bottom: 20px; /* Space between this input and the next */
+}
+
+.success {
+    color: green;
+}
+
+.error {
+    color: red;
+}
+
 
 /* Locker Page */
 h3 {

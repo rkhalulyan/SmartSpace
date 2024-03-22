@@ -9,21 +9,39 @@
     <div class="container">
         <h1 class="title">Smart Space</h1>
         <div class="login-container">
-            <h2>Type a Four Digit Pin to Login</h2>
-            <div class="pin-inputs">
-                <input type="text" maxlength="1" class="pin-input" autofocus oninput="moveFocus(this, event)">
-                <input type="text" maxlength="1" class="pin-input" oninput="moveFocus(this, event)">
-                <input type="text" maxlength="1" class="pin-input" oninput="moveFocus(this, event)">
-                <input type="text" maxlength="1" class="pin-input" oninput="moveFocus(this, event)">
-            </div>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div>
+                        {% for category, message in messages %}
+                            <div class="{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <form action="/login" method="POST">
+                <h2>Login</h2>
+                <input type="text" name="username" id="username" class="username-field" placeholder="Enter username" autofocus>
+
+                <h2>Pin</h2>
+                <div class="pin-inputs">
+                    <input type="text" maxlength="1" class="pin-input" name="pin1" oninput="moveFocus(this, event)">
+                    <input type="text" maxlength="1" class="pin-input" name="pin2" oninput="moveFocus(this, event)">
+                    <input type="text" maxlength="1" class="pin-input" name="pin3" oninput="moveFocus(this, event)">
+                    <input type="text" maxlength="1" class="pin-input" name="pin4" oninput="moveFocus(this, event)">
+                </div>
+                
+                <button type="submit" class="button">Login</button>
+            </form>
+
             <div class="or-container">
                 <p class="or-text">Or</p>
             </div>
-            <form action="signup" method="GET">
-                <button type="submit" class="button">Create Account</button>
-            </form>
+            
+            <a href="/signup" class="button">Create Account</a>
         </div>
     </div>
+
     <script>
         function moveFocus(currentElement, event) {
             if (event.inputType === 'deleteContentBackward' && currentElement.previousElementSibling) {
@@ -32,6 +50,12 @@
                 currentElement.nextElementSibling.focus();
             }
         }
+
+        {% if login_successful %}
+            setTimeout(function() {
+                window.location.href = "{{ url_for('lockers') }}";
+            }, 2000);
+        {% endif %}
     </script>
 </body>
 </html>

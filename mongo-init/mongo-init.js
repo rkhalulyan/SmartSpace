@@ -7,8 +7,8 @@ db.Lockers.drop();
 
 // Create the Users collection and insert some sample documents
 db.Users.insertMany([
-    { Name: "John Doe", PhoneNumber: "123-456-7890", Pin: 12345 },
-    { Name: "Jane Smith", PhoneNumber: "987-654-3210", Pin: 56789 }
+    { Name: "John Doe", Username: "John101", Pin: 1234 },
+    { Name: "Jane Smith", Username: "Jane101", Pin: 5678 }
 ]);
 
 // Fetch the user IDs

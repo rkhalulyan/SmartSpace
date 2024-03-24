@@ -164,7 +164,7 @@ label {
 }
 
 /* Style for individual lockers */
-.locker {
+.locker-available {
 	background-color: #28cd2e; /* Green background for available lockers */
     color: rgb(0, 0, 0);
     padding: 15px;
@@ -174,6 +174,29 @@ label {
     position: relative; /* Absolute positioning inside locker */
 	transition: transform 0.3s ease; 
 }
+
+/* Style for occupied lockers */
+.locker-occupied {
+    background-color: #ff0000; /* Red background for occupied lockers */
+    color: rgb(0, 0, 0);
+    padding: 15px;
+    text-align: center;
+	height: 150px;
+    border-radius: 10px;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+/* Style for user's current locker */
+.locker-userLocker {
+    background-color: #ffff00; /* Yellow background for the user's locker */
+    color: rgb(0, 0, 0);
+    padding: 15px;
+    text-align: center;
+	height: 150px;
+    border-radius: 10px;
+    position: relative;
+    transition: transform 0.3s ease;
 
 /* Hover effect for lockers */
 .locker:hover {
@@ -210,20 +233,20 @@ label {
     cursor: pointer;
 }
 
-/* Style for locker status */
-.available {
+/* Style for locker status labels */
+.available-label {
 	color:green;
 	font-weight: bold;
     margin-top: 60px;
 }
 
-.occupied {
+.occupied-label {
 	color:red;
 	font-weight: bold;
     margin-top: 10px;
 }
 
-.userLocker {
+.userLocker-label {
 	color:yellow;
 	font-weight: bold;
     margin-top: 10px;

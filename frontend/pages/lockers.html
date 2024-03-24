@@ -3,62 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <title>Locker Reservation</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='Lockers.css') }}">
 </head>
 <body>
-    <!-- Main container for form and lockers -->
+    <h1>Welcome John Doe</h1>
+
     <div class="main-container">
-    
-        <!-- Container for the locker search form -->
-        <div class="locker-search-container">
-            <h3>Reserve a Locker</h3>
-            <div class="form-fields">
-                <label for="lockerNo">Locker No</label>
-                <select id="lockerNo">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
+        <div class="reservation-column">
+            <h2>Reserve a Locker</h2>
+            <form action="/reserve" method="POST" class="reservation-form">
+                <label for="chooseLocker" class="form-label">Choose Locker Number:</label>
+                <select id="chooseLocker" name="chooseLocker" class="form-select">
+                    <!-- Locker options will be dynamically generated here -->
                 </select>
-                <button id="reserve">Reserve</button>
 
-                <label for="location">Your Lockers</label>
-                <select id="lockerNo">Your Lockers</select>
+                <button type="submit" class="form-button">Reserve</button>
+            </form>
+        </div>
 
-                <button id="checkout">Check-Out</button>
-
-                <div class="available-label">
-                    <label>Available</label>
-                </div>
-
-                <div class="occupied-label">
-                    <label>Occupied</label>
-                </div>
-
-                <div class="userLocker-label">
-                    <label>Your Locker</label>
-                </div>
-
+        <div class="lockers-column">
+            <h2>Lockers</h2>
+            <div class="locker-container" id="lockerContainer">
+                <!-- Locker squares will be dynamically generated here -->
             </div>
         </div>
-        
-        <!-- Container for the locker display -->
-        <div class="locker-grid">
-            <!-- Each locker is initially set to available -->
-            <div class="locker-available" lockerID="1">Locker A-001</div>
-            <div class="locker-available" lockerID="2">Locker A-002</div>
-            <div class="locker-available" lockerID="3">Locker A-003</div>
-            <div class="locker-available" lockerID="4">Locker A-004</div>
-            <div class="locker-available" lockerID="5">Locker A-005</div>
-            <div class="locker-available" lockerID="6">Locker A-006</div>
-            <div class="locker-available" lockerID="7">Locker A-007</div>
-            <div class="locker-available" lockerID="8">Locker A-008</div>
-        </div>
-        <script src="script.js"></script>
     </div>
+
+    <script>
+        // Function to generate locker options and squares
+        function generateLockers(start, end) {
+            const chooseLockerSelect = document.getElementById('chooseLocker');
+            const lockerContainer = document.getElementById('lockerContainer');
+
+            for (let i = start; i <= end; i++) {
+                const lockerOption = document.createElement('option');
+                lockerOption.value = i;
+                lockerOption.textContent = `Locker ${i}`;
+
+                chooseLockerSelect.appendChild(lockerOption.cloneNode(true));
+
+                const lockerSquare = document.createElement('div');
+                lockerSquare.classList.add('locker-square');
+                lockerSquare.textContent = `Locker ${i}`;
+                lockerSquare.addEventListener('click', () => selectLocker(i));
+
+                lockerContainer.appendChild(lockerSquare);
+            }
+        }
+
+        // Generate lockers from 1 to 50
+        generateLockers(1, 50);
+
+        // Function to handle locker selection
+        function selectLocker(lockerNumber) {
+            alert(`Locker ${lockerNumber} selected!`);
+        }
+    </script>
 </body>
 </html>

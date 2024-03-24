@@ -20,8 +20,40 @@ users_collection = db['Users']  # Your collection name
 def home():
     return render_template('index.html')
 
-@app.route('/signup')
+@app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    if request.method == 'POST':
+        full_name = request.form.get('fullName')
+        username = request.form.get('username')
+        pin_parts = [
+            request.form.get('pin1'),
+            request.form.get('pin2'),
+            request.form.get('pin3'),
+            request.form.get('pin4')
+        ]
+        pin = ''.join(pin_parts)
+
+        try:
+            pin = int(pin)
+            existing_user = users_collection.find_one({'Username': username})
+            if existing_user:
+                flash('Username already exists. Please choose another.', 'error')
+                return render_template('signup.html')
+
+            if len(full_name) > 0 and len(username) > 0:
+                user = {
+                    'Name': full_name,
+                    'Username': username,
+                    'Pin': pin
+                }
+                users_collection.insert_one(user)
+                flash('Account created successfully!', 'success')
+                return redirect(url_for('login_screen'))
+            else:
+                flash('Please fill in all the fields', 'error')
+        except ValueError:
+            flash('Invalid PIN format', 'error')
+
     return render_template('signup.html')
 
 @app.route('/lockers')

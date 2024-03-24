@@ -39,27 +39,29 @@ body {
 .or-container {
     display: flex;
     justify-content: center;
-    margin-top: 20px; /* Adjust the margin as needed */
+    margin: 20px 0; /* Adjust vertical margins to create space above and below */
 }
 
 .or-text {
-    font-size: 20px; /* Adjust the font size as needed */
-    margin: 0;
+    font-size: 20px; /* Adjust font size as needed */
     padding: 0;
 }
 
 
+
+
 .button {
-    margin-top: 30px; /* Increased margin above the button */
-    padding: 15px 30px; /* Increased padding for the button */
-    font-size: 20px; /* Increased font size for the button */
-    background-color: #3498db; /* Blue background color */
-    color: #fff; /* White text color */
+    margin-top: 10px; /* Adjusted margin-top for better spacing under the 'Or' text */
+    padding: 15px 30px;
+    font-size: 20px;
+    background-color: #3498db;
+    color: #fff;
     border: none;
-    border-radius: 8px; /* Increased border radius for smoother corners */
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease; /* Smooth transition on hover */
+    transition: background-color 0.3s ease;
 }
+
 
 .button:hover {
     background-color: #2980b9; /* Darker blue background color on hover */

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, flash, url_for
+from flask import Flask, render_template, request, redirect, flash, url_for, session
 import os
 from pymongo import MongoClient
 
@@ -58,10 +58,15 @@ def signup():
 
 @app.route('/lockers')
 def lockers():
+    if 'username' not in session:  # Check if user is not logged in
+        flash('You must be logged in to view this page', 'error')
+        return redirect(url_for('login_screen'))  # Redirect to login page if not logged in
     return render_template('lockers.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login_screen():
+    login_successful = False
     if request.method == 'POST':
         username = request.form.get('username')
         pin_parts = [
@@ -70,23 +75,29 @@ def login_screen():
             request.form.get('pin3'),
             request.form.get('pin4')
         ]
-        pin = ''.join(pin_parts)  # Concatenates the PIN parts into a single string
+        pin = ''.join(pin_parts)
 
         try:
             pin = int(pin)
+            user = users_collection.find_one({'Username': username, 'Pin': pin})
+            if user:
+                session['username'] = username
+                flash('Login successful, Redirecting...', 'success')
+                login_successful = True
+            else:
+                flash('Invalid username or PIN', 'error')
         except ValueError:
             flash('Invalid PIN format', 'error')
-            return render_template('index.html')
 
-        user = users_collection.find_one({'Username': username, 'Pin': pin})
-        if user:
-            flash('Login successful, Redirecting...', 'success')
-            return render_template('index.html', login_successful=True)
-        else:
-            flash('Invalid username or PIN', 'error')
+    return render_template('index.html', login_successful=login_successful)
 
-    return render_template('index.html', login_successful=False)
 
+
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    session.clear()  # Clear the session
+    flash('You have been logged out', 'success')
+    return redirect(url_for('login_screen'))
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)

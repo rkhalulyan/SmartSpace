@@ -58,10 +58,20 @@ def signup():
 
 @app.route('/lockers')
 def lockers():
-    if 'username' not in session:  # Check if user is not logged in
+    if 'username' not in session:
         flash('You must be logged in to view this page', 'error')
-        return redirect(url_for('login_screen'))  # Redirect to login page if not logged in
-    return render_template('lockers.html')
+        return redirect(url_for('login_screen'))
+
+    username = session['username']
+    user = users_collection.find_one({'Username': username})
+    if user:
+        full_name = user['Name']  # Assuming 'Name' is the field where the user's full name is stored
+    else:
+        flash('User not found', 'error')
+        return redirect(url_for('login_screen'))
+
+    return render_template('lockers.html', full_name=full_name)
+
 
 
 @app.route('/login', methods=['GET', 'POST'])

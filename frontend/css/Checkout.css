@@ -1,95 +1,109 @@
 /* Styling for the checkout page */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #ededed;
-  }
-  
+  font-family: American Typewriter;
+  background-color: #ffffff;
+}
+
 h2 {
-    font-family: American Typewriter, sans-serif;
-    text-align: center;
+  font-family: American Typewriter;
+  text-align: center;
 }
 
 .locker-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center; /* Center the locker items horizontally */
-  align-items: start; /* Align the items at the start vertically */
-  max-height: 400px;
-  overflow-y: auto;
-  gap: 10px;
-  padding: 10px;
-  background: #f9f9f9;
-  border-radius: 8px;
-  margin: 0 auto; /* Center the locker container itself */
-  width: fit-content; /* Shrink the width to fit its children */
+display: flex;
+flex-wrap: wrap;
+justify-content: center; /* Center the locker items horizontally */
+align-items: start; /* Align the items at the start vertically */
+max-height: 450px;
+overflow-y: auto;
+gap: 40px;
+padding: 40px;
+background: #ebebeb;
+border-radius: 8px;
+margin: 0 auto; /* Center the locker container itself */
+width: fit-content; /* Shrink the width to fit its children */
+position: relative;
+margin-bottom: 20px;
 }
 
 .locker {
-  width: 100px; /* Fixed width for lockers */
-  height: 100px; /* Fixed height for lockers */
-  border: 5px solid #ddd;
-  padding: 185px 90px;
-  text-align: center;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-sizing: border-box; /* Includes padding and border in the width and height */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative; /* This is needed to position the pseudo-element */
+width: 100px; /* Fixed width for lockers */
+height: 100px; /* Fixed height for lockers */
+border: 5px solid #919191;
+padding: 185px 90px;
+text-align: center;
+border-radius: 10px;
+cursor: pointer;
+transition: all 0.3s ease;
+box-sizing: border-box;
+display: flex;
+align-items: center;
+justify-content: center;
+position: relative; 
 }
-  
+
+.locker-checkbox {
+position: absolute;
+bottom: -30px; /* Position the checkbox below the locker */
+left: 50%;
+transform: translateX(-50%) scale(1.6); /* Scale and center the checkbox */
+-webkit-transform: translateX(-50%) scale(1.6);
+margin: 0; /* Remove any default margin */
+}
+
 .locker:before {
-  content: '';
-  position: absolute;
-  top: 15px; /* Position above the lockers */
-  left: 50%; /* Start at the center of the container */
-  transform: translateX(-50%); /* Shift to the left by half its width to center */
-  width: 80%; 
-  height: 7px;
-  background: linear-gradient(to bottom, #ddd 50%, transparent 50%, #ddd 50%); /* Creates double line effect */
-  background-size: 100% 4px;
+content: '';
+position: absolute;
+top: 15px; /* Position line above the lockers */
+left: 50%; /* Start at the center of the container */
+transform: translateX(-50%); /* Shift to the left by half its width to center */
+width: 80%; 
+height: 7px;
+background: linear-gradient(to bottom, #919191 50%, transparent 50%, #919191 50%); /* Creates double line effect */
+background-size: 100% 4px;
 }
 
 .locker.selected {
-  border-color: #4CAF50;
-  background-color: #e6f2eb;
+border-color: #4CAF50;
+background-color: #76e0a2;
 }
 
 .locker:hover {
-  border-color: #4CAF50;
+border-color: #4CAF50;
 }
 
 .check-out-btn {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+font-family: American Typewriter;
+display: block;
+width: 200px;
+padding: 10px;
+margin: 0 auto;
+font-size: 16px;
+background-color: #c4c4c4;
+color: black;
+border: 8px;
+border-color: black;
+border-radius: 4px;
+cursor: pointer;
+transition: background-color 0.3s ease;
 }
 
 .check-out-btn:hover {
-  background-color: #369b47;
+background-color: #369b47;
 }
 
 .scroll-panel {
-  overflow-y: auto;
-  height: 150px;
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 20px;
+overflow-y: auto;
+height: 150px;
+border: 1px solid #ccc;
+padding: 10px;
+margin-bottom: 20px;
 }
 
 .reserved-locker {
-  margin: 5px 0;
-  padding: 5px;
-  background: #e6f2eb;
-  border-left: 5px solid #4CAF50;
-  border-radius: 5px;
+margin: 5px 0;
+padding: 5px;
+background: #e6f2eb;
+border-left: 5px solid #4CAF50;
+border-radius: 5px;
 }

@@ -41,53 +41,52 @@ function updateSelectedLockersPanel() {
   });
 }
 
-// Event listener for click events on the locker container
+// User clicking on locker or checkbox
 lockerContainer.addEventListener('click', function(event) {
-  const target = event.target;
-  // Check if the clicked element is a locker
-  if(target.classList.contains('locker')) {
-    const lockerId = target.dataset.lockerId;
-    // Toggle the 'selected' state of the locker
-    if(target.classList.contains('selected')) {
-      // If already selected, remove from the array and unstyle
-      target.classList.remove('selected');
+  let target = event.target;
+  if (target.classList.contains('locker-checkbox')) {
+    // If the click is on the checkbox, find the parent locker element
+    target = target.closest('.locker');
+  }
+  
+  const lockerId = target.dataset.lockerId;
+  if (lockerId) {
+    const locker = target;
+    const checkbox = locker.querySelector('.locker-checkbox');
+    
+    // Toggle 'selected' class and checkbox checked status
+    if (locker.classList.contains('selected')) {
+      locker.classList.remove('selected');
+      checkbox.checked = false;
       selectedLockers = selectedLockers.filter(id => id !== lockerId);
     } else {
-      // If not selected, add to the array and apply styling
-      target.classList.add('selected');
-      selectedLockers.push(lockerId);
+      locker.classList.add('selected');
+      checkbox.checked = true;
+      if (!selectedLockers.includes(lockerId)) {
+        selectedLockers.push(lockerId);
+      }
     }
-    // Update the scroll panel to reflect the current selection
     updateSelectedLockersPanel();
   }
 });
 
-// Event listener for the checkout button
 document.getElementById('checkout-btn').addEventListener('click', function() {
-  // Check if any lockers are selected
   if(selectedLockers.length === 0) {
-    // Inform the user that they need to select a locker
-    checkoutMessage.textContent = "Please select a locker you want to check out of.";
+    checkoutMessage.textContent = "Please select a locker you want to check out of";
     checkoutMessage.classList.remove('hidden');
   } else {
-    // Ask for confirmation to checkout
-    const confirmation = confirm("You are about to check out of the selected locker(s): " + selectedLockers.join(', ') + ". Do you want to proceed?");
+    const confirmation = confirm("You are about to check out of the selected locker(s): "
+      + selectedLockers.join(', ') + ". Do you want to proceed?");
     
     if (confirmation) {
-      // Handle the checkout process
+      // Logic to handle the actual checkout process would go here
       selectedLockers.forEach(lockerId => {
-        // Find and remove the locker from the locker container
+        // Remove the locker from the display
         const lockerDiv = lockerContainer.querySelector(`.locker[data-locker-id="${lockerId}"]`);
         lockerDiv.remove();
       });
-      
-      // Update the user on successful checkout
       checkoutMessage.textContent = "Checked out successfully.";
-      
-      // Reset the selected lockers array as they have been checked out
       selectedLockers = [];
-      
-      // Clear the selection panel
       updateSelectedLockersPanel();
       checkoutMessage.classList.remove('hidden');
     }

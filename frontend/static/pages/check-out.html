@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SmartSpace check-out</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/check-in-styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Checking out...</h1>
+        <div class="input-container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div>
+                        {% for category, message in messages %}
+                            <div class="{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            <form action="/check-out" method="POST">
+                
+                <h2>Enter Username:</h2>
+                <input type="text" name="username" class="username-field" placeholder="Enter username">
+                
+                <h2>Create a PIN:</h2>
+                <div class="pin-inputs">
+                    <input type="text" maxlength="1" name="pin1" class="pin-input" oninput="moveFocus(this, event)">
+                    <input type="text" maxlength="1" name="pin2" class="pin-input" oninput="moveFocus(this, event)">
+                    <input type="text" maxlength="1" name="pin3" class="pin-input" oninput="moveFocus(this, event)">
+                    <input type="text" maxlength="1" name="pin4" class="pin-input" oninput="moveFocus(this, event)">
+                    <input type="text" maxlength="1" name="pin5" class="pin-input" oninput="moveFocus(this, event)">
+                </div>
+                <div class="submit-container">
+                    <button type="submit" class="button">Submit</button>
+                </div>
+            </form>            
+                <a href="/" class="back-link">Back to Home Page</a>
+            </div>
+        </div>ß
+    </div>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

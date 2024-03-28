@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>SmartSpace Login</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='LoginAndSignup.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/check-in-styles.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1 class="title">Smart Space</h1>
-        <div class="login-container">
+        <h1 class="title">Checking In...</h1>
+        <div class="input-container">
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     <div>
@@ -18,7 +18,7 @@
                     </div>
                 {% endif %}
             {% endwith %}
-            <form action="/signup" method="POST">
+            <form action="/check-in" method="POST">
                 <h2>Full Name:</h2>
                 <input type="text" name="fullName" class="full-name-field" placeholder="Enter full name" autofocus>
                 
@@ -31,23 +31,16 @@
                     <input type="text" maxlength="1" name="pin2" class="pin-input" oninput="moveFocus(this, event)">
                     <input type="text" maxlength="1" name="pin3" class="pin-input" oninput="moveFocus(this, event)">
                     <input type="text" maxlength="1" name="pin4" class="pin-input" oninput="moveFocus(this, event)">
+                    <input type="text" maxlength="1" name="pin5" class="pin-input" oninput="moveFocus(this, event)">
                 </div>
                 <div class="submit-container">
                     <button type="submit" class="button">Submit</button>
                 </div>
             </form>            
-                <a href="/" class="back-link">Back to Login</a>
+                <a href="/" class="back-link">Back to Home Screen!</a>
             </div>
         </div>
     </div>
-    <script>
-        function moveFocus(currentElement, event) {
-            if (event.inputType === 'deleteContentBackward' && currentElement.previousElementSibling) {
-                currentElement.previousElementSibling.focus();
-            } else if (currentElement.value.length === 1 && currentElement.nextElementSibling) {
-                currentElement.nextElementSibling.focus();
-            }
-        }
-    </script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>

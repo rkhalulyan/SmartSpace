@@ -7,14 +7,14 @@ body {
     margin: 0;
     background-color: #fff;
     font-family: Arial, sans-serif;
-    font-size: 18px; /* Increased font size for the entire page */
+    font-size: 18px;
 }
 
 .container {
     text-align: center; /* Center text inside the container */
 }
 
-.login-container {
+.input-container {
     margin-top: 20px;
     max-width: 400px; /* Set a maximum width for the login container */
     padding: 30px; /* Increased padding for the login container */

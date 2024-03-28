@@ -18,7 +18,7 @@ max-height: 450px;
 overflow-y: auto;
 gap: 40px;
 padding: 40px;
-background: #ebebeb;
+background: #eaeaea;
 border-radius: 8px;
 margin: 0 auto; /* Center the locker container itself */
 width: fit-content; /* Shrink the width to fit its children */
@@ -30,6 +30,7 @@ margin-bottom: 20px;
 width: 100px; /* Fixed width for lockers */
 height: 100px; /* Fixed height for lockers */
 border: 5px solid #919191;
+background-color: #c7c7c7;
 padding: 185px 90px;
 text-align: center;
 border-radius: 10px;

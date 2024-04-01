@@ -47,8 +47,15 @@ body {
     padding: 0;
 }
 
+.title {
+    margin: 0%;
+}
 
-
+.subtitle {
+    font-size: 15px;
+    font-weight: lighter;
+    margin: 0%;
+}
 
 .button {
     margin-top: 10px; /* Adjusted margin-top for better spacing under the 'Or' text */

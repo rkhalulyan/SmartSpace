@@ -1,14 +1,14 @@
 from flask import Flask, render_template, request, redirect, flash, url_for, session
-import os
 from pymongo import MongoClient
 from models.user import find_user_by_username, create_user, get_user_lockers, find_user_by_username_and_pin
+import os
+import time
 
-
-# Initialize the Flask application specifying the template and static folders
+# Flask app initizlization
 app = Flask(
     __name__,
-    template_folder='/frontend/static/pages',  # Set the correct path for your templates
-    static_folder='/frontend/static'  # Set the correct path for your static files like CSS
+    template_folder='/frontend/static/pages',  
+    static_folder='/frontend/static'  
     
 )
 app.secret_key = 'your_secret_key'  # Needed for flash messages
@@ -32,6 +32,7 @@ def home():
 
 @app.route('/check-in', methods=['GET', 'POST'])
 def checkIn():
+
     if request.method == 'POST':
         full_name = request.form.get('fullName')
         username = request.form.get('username')
@@ -46,19 +47,30 @@ def checkIn():
 
         try:
             pin = int(pin)
-            if find_user_by_username(username):
-                flash('Username already exists. Please choose another.', 'error')
+            # user exists but pin did not match, throw error 
+            if find_user_by_username(username) and not find_user_by_username_and_pin(username, pin):
+                flash('User exists, and pin does not match!', 'error')
+                return redirect(url_for('checkIn'))
+            # user exists but pin does match, log in 
+            elif find_user_by_username(username) and find_user_by_username_and_pin(username, pin):
+                flash('Logging you in!', 'success')
+                session['Username'] = username
+                return redirect(url_for('lockers'))
+            # user doesnt exist create user 
             else:
                 create_user(full_name, username, pin)
                 flash('Account created successfully!', 'success')
                 session['Username'] = username
                 return redirect(url_for('lockers'))
+            
         except ValueError:
             flash('Invalid PIN format', 'error')
+             
     return render_template('check-in.html')
 
 @app.route('/check-out', methods=['GET','POST'])
 def check_out():
+
     app.logger.info("in /checkout")
     if request.method == 'POST':
         username = request.form.get('username')

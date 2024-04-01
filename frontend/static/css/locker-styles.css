@@ -1,0 +1,32 @@
+body {
+    display: flex;
+    font-family: Arial, sans-serif;
+  }
+  .left-panel {
+    flex: 1;
+    padding: 20px;
+    max-width: 300px;
+  }
+  .right-panel {
+    flex: 2;
+    overflow-y: scroll;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 10px;
+    padding: 20px;
+    height: 90vh;
+    background-color: #f0f0f0;
+  }
+  .locker {
+    width: calc(33.333% - 10px);
+    height: 120px;
+    background-color:  #90EE90;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    box-sizing: border-box;
+    border: 2px solid #006400;
+    text-shadow: 2px 2px 4px #006400;
+  }

@@ -1,10 +1,8 @@
 // Function to move focus or shift it back based on input type or field content length
 function moveFocus(currentElement, event) {
     if (event.inputType === 'deleteContentBackward' && currentElement.previousElementSibling && currentElement.previousElementSibling.classList.contains('pin-input')) {
-        // Move focus to the previous element if it exists and is a pin-input, when backspace is pressed
         currentElement.previousElementSibling.focus();
     } else if (currentElement.value.length === 1 && currentElement.nextElementSibling && currentElement.nextElementSibling.classList.contains('pin-input')) {
-        // Move focus to the next element if it exists and is a pin-input, when a digit is entered
         currentElement.nextElementSibling.focus();
     }
 }
@@ -13,16 +11,16 @@ function moveFocus(currentElement, event) {
 document.addEventListener('DOMContentLoaded', function () {
     // Event listener for the check-in button
     var checkInButton = document.getElementById('check-in-button');
-    if(checkInButton) {
+    if (checkInButton) {
         checkInButton.addEventListener('click', function() {
             window.location.href = '/check-in';
         });
     }
 
     // Event listener for the check-out button
-    var checkInButton = document.getElementById('check-out-button');
-    if(checkInButton) {
-        checkInButton.addEventListener('click', function() {
+    var checkOutButton = document.getElementById('check-out-button'); // Changed variable name here
+    if (checkOutButton) {
+        checkOutButton.addEventListener('click', function() {
             window.location.href = '/check-out';
         });
     }
@@ -31,12 +29,12 @@ document.addEventListener('DOMContentLoaded', function () {
     var pinInputs = document.querySelectorAll('.pin-input');
     pinInputs.forEach(function(input) {
         input.addEventListener('input', function(event) {
-            moveFocus(this, event); // Call moveFocus when input event occurs
+            moveFocus(this, event);
         });
 
         input.addEventListener('keydown', function(event) {
             if (event.key === "Backspace" && this.value.length === 0) {
-                moveFocus(this, event); // Adjust focus based on backspace at the start of input
+                moveFocus(this, event);
             }
         });
     });

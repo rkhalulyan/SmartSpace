@@ -107,14 +107,6 @@ button.ghost {
     text-decoration: underline; /* Add underline on hover to indicate it's clickable */
 }
 
-.full-name-field {
-    width: calc(100% - 40px); /* Adjust width as needed */
-    height: 50px; /* Match height with other input fields */
-    font-size: 24px; /* Match font size with other input fields */
-    text-align: center; /* Center text input */
-    margin-bottom: 20px; /* Space between this input and the next */
-}
-
 .success {
     color: green;
 }

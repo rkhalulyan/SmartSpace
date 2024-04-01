@@ -10,9 +10,9 @@ def find_user_by_username_and_pin(username, pin):
     db = app.config['db']
     return db['Users'].find_one({'Username': username, 'Pin': pin})
 
-def create_user(full_name, username, pin):
+def create_user(username, pin):
     db = app.config['db']
-    user = {'Name': full_name, 'Username': username, 'Pin': pin}
+    user = {'Username': username, 'Pin': pin}
     db['Users'].insert_one(user)
     return user
 

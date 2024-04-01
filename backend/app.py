@@ -31,9 +31,8 @@ def home():
     return render_template('welcome.html')
 
 @app.route('/check-in', methods=['GET', 'POST'])
-def checkIn():
+def login_or_create_account():
     if request.method == 'POST':
-        full_name = request.form.get('fullName')
         username = request.form.get('username')
         pin_parts = [
             request.form.get('pin1'),
@@ -42,19 +41,28 @@ def checkIn():
             request.form.get('pin4'),
             request.form.get('pin5')
         ]
-        pin = ''.join(pin_parts)
+        pin = ''.join(pin_parts) if all(pin_parts) else None
 
-        try:
+        if pin and pin.isdigit():
             pin = int(pin)
-            if find_user_by_username(username):
-                flash('Username already exists. Please choose another.', 'error')
+            user = find_user_by_username(username)
+
+            if user:
+                if 'Pin' in user and user['Pin'] == pin:
+                    # PIN is correct, proceed to login
+                    flash('Login successful!', 'success')
+                    session['Username'] = username
+                else:
+                    # User found but PIN is incorrect
+                    flash('Incorrect PIN, please try again!', 'error')
             else:
-                create_user(full_name, username, pin)
+                # No existing user found, create a new account with the provided username and PIN
+                create_user(username, pin)
                 flash('Account created successfully!', 'success')
-                session['Username'] = username
-                return redirect(url_for('lockers'))
-        except ValueError:
-            flash('Invalid PIN format', 'error')
+        else:
+            # PIN is not fully entered or not numeric
+            flash('PIN is required and must be numeric.', 'error')
+
     return render_template('check-in.html')
 
 @app.route('/check-out', methods=['GET','POST'])
@@ -98,5 +106,3 @@ def checkOutLockers():
 def lockers():
     username_in_session = session.get('Username', 'Guest User')
     return render_template("lockers.html", username=username_in_session)
-
-

@@ -19,7 +19,6 @@
                 {% endif %}
             {% endwith %}
             <form action="/check-out" method="POST">
-                
                 <h2>Enter Username:</h2>
                 <input type="text" name="username" class="username-field" placeholder="Enter username">
                 
@@ -35,9 +34,9 @@
                     <button type="submit" class="button">Submit</button>
                 </div>
             </form>            
-                <a href="/" class="back-link">Back to Home Page</a>
+                <a href="/" class="back-link">Back to Home</a>
             </div>
-        </div>ß
+        </div>
     </div>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>

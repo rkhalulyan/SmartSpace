@@ -11,17 +11,13 @@
         <div class="input-container">
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
-                    <div>
-                        {% for category, message in messages %}
-                            <div class="{{ category }}">{{ message }}</div>
-                        {% endfor %}
-                    </div>
+                    {% for category, message in messages %}
+                        <div class="flash-message {{ category }}">{{ message }}</div>
+                    {% endfor %}
                 {% endif %}
             {% endwith %}
+
             <form action="/check-in" method="POST">
-                <h2>Full Name:</h2>
-                <input type="text" name="fullName" class="full-name-field" placeholder="Enter full name" autofocus>
-                
                 <h2>Create a Username:</h2>
                 <input type="text" name="username" class="username-field" placeholder="Enter username">
                 
@@ -36,11 +32,20 @@
                 <div class="submit-container">
                     <button type="submit" class="button">Submit</button>
                 </div>
-            </form>            
-                <a href="/" class="back-link">Back to Home Screen!</a>
-            </div>
+            </form>
+            <a href="/" class="back-link">Back to Home</a>
         </div>
     </div>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var successMessages = document.querySelectorAll('.flash-message.success');
+            if (successMessages.length > 0) {
+                setTimeout(function() {
+                    window.location.href = '/lockers';
+                }, 2000);
+            }
+        });
+    </script>
 </body>
 </html>

@@ -7,18 +7,18 @@ db.Lockers.drop();
 
 // Create the Users collection and insert some sample documents
 db.Users.insertMany([
-    { Name: "John Doe", Username: "John101", Pin: 1234 },
-    { Name: "Jane Smith", Username: "Jane101", Pin: 5678 }
+    { Username: "John101", Pin: 12345 },
+    { Username: "Jane101", Pin: 6789 }
 ]);
 
 // Fetch the user IDs
-var johnDoeId = db.Users.findOne({ Name: "John Doe" })._id;
-var janeSmithId = db.Users.findOne({ Name: "Jane Smith" })._id;
+var johnId = db.Users.findOne({ Username: "John101" })._id;
+var janeId = db.Users.findOne({ Username: "Jane101" })._id;
 
 // Create the Lockers collection and insert sample documents, referencing User IDs
 db.Lockers.insertMany([
-    { LockerNumber: 1, CustomerId: johnDoeId, ObjectStored: "Backpack", StartDate: new Date("2024-01-01"), EndDate: new Date("2024-01-31") },
-    { LockerNumber: 2, CustomerId: janeSmithId, ObjectStored: "Laptop", StartDate: new Date("2024-02-01"), EndDate: new Date("2024-02-28") }
+    { LockerNumber: 1, CustomerId: johnId },
+    { LockerNumber: 2, CustomerId: janeId }
 ]);
 
 // Fetch and display all documents from Users collection
@@ -31,10 +31,7 @@ db.Lockers.find().forEach(function(locker) {
     var customerInfo = db.Users.findOne({ _id: locker.CustomerId });
     printjson({
         LockerNumber: locker.LockerNumber,
-        Customer: customerInfo.Name,
-        ObjectStored: locker.ObjectStored,
-        StartDate: locker.StartDate,
-        EndDate: locker.EndDate
+        Customer: customerInfo.Username  // Only displaying Username
     });
 });
 

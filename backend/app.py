@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, flash, url_for, session
+from flask import Flask, render_template, request, redirect, flash, url_for, session, jsonify
 from pymongo import MongoClient
 from models.user import find_user_by_username, create_user, get_user_lockers, find_user_by_username_and_pin
 import os
@@ -24,7 +24,7 @@ client = MongoClient(db_url)
 db = client['SmartSpace']  
 app.config['db'] = db
 users_collection = db['Users'] 
-lockers_collection = db['Lockers']
+lockers_collection = db['Locker']
 
 @app.route('/')
 def home():
@@ -108,7 +108,25 @@ def checkOutLockers():
 
 @app.route('/lockers', methods=['GET', 'POST'])
 def lockers():
-    username_in_session = session.get('Username', 'Guest User')
-    return render_template("lockers.html", username=username_in_session)
+    user = find_user_by_username(session.get('Username'))
+    username = user['Name']
+    return render_template("lockers.html", username=user)
+
+@app.route('/populate-lockers', methods=['GET'])
+def populate_lockers():
+
+    if lockers_collection.count_documents({}) == 0:
+        lockers_data = [
+            {
+                "lockerNumber": i,
+                "customer": None,
+                "type": "small" if i <= 25 else "large"
+            } for i in range (1, 51)
+        ]
+        lockers_collection.insert_many(lockers_data)
+
+    lockers = list(lockers_collection.find({}, {'_id': 0}))
+    return jsonify(lockers)
+
 
 

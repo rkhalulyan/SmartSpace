@@ -42,4 +42,56 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+document.addEventListener('DOMContentLoaded', async function() {
+    const rightPanel = document.querySelector('.right-panel');
+    const lockerSelection = document.getElementById('lockerSelection'); // Make sure this is defined
 
+    try {
+        const response = await fetch('/populate-lockers');
+        const lockers = await response.json();
+
+        let previouslySelectedLocker = null;
+
+        lockers.forEach(locker => {
+            const option = document.createElement('option');
+            option.value = locker.lockerNumber;
+            option.textContent = `Locker ${locker.lockerNumber} - ${locker.type}`;
+            lockerSelection.appendChild(option);
+
+            const lockerDiv = document.createElement('div');
+            lockerDiv.classList.add('locker');
+
+            const lockerNumberDiv = document.createElement('div');
+            lockerNumberDiv.classList.add('locker-number');
+            lockerNumberDiv.textContent = `Locker ${locker.lockerNumber}`;
+            lockerDiv.appendChild(lockerNumberDiv);
+
+            const sizeLabel = document.createElement('div');
+            sizeLabel.classList.add('size-label');
+            sizeLabel.textContent = `${locker.type}`;
+            lockerDiv.appendChild(sizeLabel);
+
+            const price = locker.type === "small" ? 7 : 10; // Assuming $7 for small, $10 for large
+            const priceLabel = document.createElement('div');
+            priceLabel.classList.add('price');
+            priceLabel.textContent = `$${price}`;
+            lockerDiv.appendChild(priceLabel);
+
+            lockerDiv.addEventListener('click', function() {
+                // Remove 'locker-selected' class from the previously selected locker
+                if (previouslySelectedLocker) {
+                    previouslySelectedLocker.classList.remove('locker-selected');
+                }
+                // Add 'locker-selected' class to the current clicked locker
+                this.classList.add('locker-selected');
+                previouslySelectedLocker = this; // Update the reference to the current locker
+
+                // Populate the dropdown with the locker number
+                lockerSelection.value = locker.lockerNumber;
+            });
+            rightPanel.appendChild(lockerDiv);
+        });
+    } catch (error) {
+        console.error('Failed to fetch lockers:', error);
+    }
+});

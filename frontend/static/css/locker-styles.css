@@ -1,32 +1,67 @@
 body {
-    display: flex;
-    font-family: Arial, sans-serif;
-  }
-  .left-panel {
-    flex: 1;
-    padding: 20px;
-    max-width: 300px;
-  }
-  .right-panel {
-    flex: 2;
-    overflow-y: scroll;
-    display: flex;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    gap: 10px;
-    padding: 20px;
-    height: 90vh;
-    background-color: #f0f0f0;
-  }
-  .locker {
-    width: calc(33.333% - 10px);
-    height: 120px;
-    background-color:  #90EE90;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    box-sizing: border-box;
-    border: 2px solid #006400;
-    text-shadow: 2px 2px 4px #006400;
-  }
+  display: flex;
+  font-family: Arial, sans-serif;
+}
+
+.left-panel {
+  flex: 1;
+  padding: 20px;
+  max-width: 300px;
+}
+
+.right-panel {
+  flex: 2;
+  overflow-y: scroll;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 10px;
+  padding: 20px;
+  height: 90vh;
+  background-color: #f0f0f0;
+}
+
+.locker {
+  width: calc(33.333% - 10px);
+  height: 120px;
+  background-color: #59da59; /* Light green background */
+  display: flex;
+  flex-direction: column; /* Arrange elements vertically */
+  color: white;
+  box-sizing: border-box;
+  border: 2px solid #006400; /* Dark green border */
+  text-shadow: 2px 2px 4px #006400;
+  position: relative; /* Add this line */
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.price {
+  position: absolute; 
+  bottom: 10px; 
+  right: 10px; 
+  font-size: 18px; 
+  color: white; /* Ensure the color contrasts with the background */
+}
+
+
+.locker-number {
+  font-size: 20px; 
+  font-weight: bold;
+}
+
+.size-label { 
+   font-style: italic;
+   align-self: center;  /* Center the size label */
+} 
+
+
+.locker:hover {
+  background-color: #27b127; /* A bit darker green on hover */
+  transform: scale(1.05); 
+  cursor: pointer;  
+}
+
+.locker-selected {
+  border: 4px solid #FFD700;
+  background-color: #27b127; /* Olive green background for contrast */
+}

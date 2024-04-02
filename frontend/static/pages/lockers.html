@@ -11,11 +11,11 @@
 <div class="left-panel">
   <label for="lockerSelection">Locker Number:</label>
   <select id="lockerSelection">
-    <!-- Options will be added by JavaScript -->
+    <!-- Options will be added through script.js -->
   </select>
   
   <fieldset>
-    <legend>Rental Duration:</legend>
+    <legend>Locker Size:</legend>
     <label>
       <input type="radio" name="locker-size" value="large" checked> Large
     </label>
@@ -37,41 +37,8 @@
   <!-- Lockers will be added by JavaScript -->
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const lockerSelection = document.getElementById('lockerSelection');
-      const creditCardButton = document.getElementById('creditCardButton');
-      const creditCardForm = document.getElementById('creditCardForm');
-      const rightPanel = document.querySelector('.right-panel');
-    
-      // Populate the locker selection dropdown
-      for (let i = 1; i <= 50; i++) {
-        const option = document.createElement('option');
-        option.value = i;
-        option.textContent = `Locker ${i}`;
-        lockerSelection.appendChild(option);
-      }
-    
-      // Handle the credit card button click
-      creditCardButton.addEventListener('click', function() {
-        if (creditCardForm.style.display === "none") {
-          creditCardForm.style.display = "block";
-          creditCardButton.textContent = "Hide Credit Card Form";
-        } else {
-          creditCardForm.style.display = "none";
-          creditCardButton.textContent = "Credit Card Information";
-        }
-      });
-    
-      // Dynamically generate lockers in the right panel
-      for (let i = 1; i <= 50; i++) {
-        const lockerDiv = document.createElement('div');
-        lockerDiv.classList.add('locker');
-        lockerDiv.textContent = `Locker ${i}`;
-        rightPanel.appendChild(lockerDiv);
-      }
-    });
-    </script>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
     
 
 </body>

@@ -14,22 +14,31 @@
     <!-- Options will be added through script.js -->
   </select>
   
-  <fieldset>
-    <legend>Locker Size:</legend>
-    <label>
-      <input type="radio" name="locker-size" value="large" checked> Large
-    </label>
-    <label>
-      <input type="radio" name="locker-size" value="small"> Small
-    </label>
-  </fieldset>
-  
-  <div id="creditCardForm" style="display:none;">
-    <label for="creditCard">Credit Card Number:</label>
-    <input type="text" id="creditCard" placeholder="1234 5678 9012 3456">
-  </div>
+   <!-- Dynamic Check-in Summary Section -->
+  <div id="checkInSummary">
+    <h2>Check-in Summary:</h2>
+    <p id="summaryLockerNumber">Locker Number: Not Selected</p>
+    <p id="summaryLockerSize">Locker Size: Not Selected</p>
+    <p id="summaryTotalCost">Total Cost: Not Selected</p>
+</div>
+
+
   
   <button id="creditCardButton">Credit Card Information</button>
+  <div id="creditCardForm" style="display:none;">
+    <label for="cardHolderName">Cardholder Name:</label>
+    <input type="text" id="cardHolderName" placeholder="Name on card">
+    
+    <label for="creditCard">Credit Card Number:</label>
+    <input type="text" id="creditCard" placeholder="1234 5678 9012 3456" inputmode="numeric">
+    
+    <label for="cardExpiry">Expiry Date:</label>
+    <input type="text" id="cardExpiry" placeholder="MM/YY" inputmode="numeric">
+    
+    <label for="cardCVC">CVC:</label>
+    <input type="text" id="cardCVC" placeholder="CVC" inputmode="numeric">
+  </div>
+  
   <button id="submit">Submit</button>
 </div>
 

@@ -43,55 +43,67 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.addEventListener('DOMContentLoaded', async function() {
-    const rightPanel = document.querySelector('.right-panel');
-    const lockerSelection = document.getElementById('lockerSelection'); // Make sure this is defined
+    const lockerSelection = document.getElementById('lockerSelection');
+    const summaryLockerNumber = document.getElementById('summaryLockerNumber');
+    const summaryLockerSize = document.getElementById('summaryLockerSize');
+    const summaryTotalCost = document.getElementById('summaryTotalCost');
 
-    try {
-        const response = await fetch('/populate-lockers');
-        const lockers = await response.json();
+    // Function to update check-in summary and highlight selected locker
+    function updateCheckInSummary(lockerNumber, lockerType, lockerCost) {
+        // Update the check-in summary text
+        summaryLockerNumber.textContent = `Locker Number: ${lockerNumber}`;
+        summaryLockerSize.textContent = `Locker Size: ${lockerType}`;
+        summaryTotalCost.textContent = `Total Cost: $${lockerCost}`;
 
-        let previouslySelectedLocker = null;
-
-        lockers.forEach(locker => {
-            const option = document.createElement('option');
-            option.value = locker.lockerNumber;
-            option.textContent = `Locker ${locker.lockerNumber} - ${locker.type}`;
-            lockerSelection.appendChild(option);
-
-            const lockerDiv = document.createElement('div');
-            lockerDiv.classList.add('locker');
-
-            const lockerNumberDiv = document.createElement('div');
-            lockerNumberDiv.classList.add('locker-number');
-            lockerNumberDiv.textContent = `Locker ${locker.lockerNumber}`;
-            lockerDiv.appendChild(lockerNumberDiv);
-
-            const sizeLabel = document.createElement('div');
-            sizeLabel.classList.add('size-label');
-            sizeLabel.textContent = `${locker.type}`;
-            lockerDiv.appendChild(sizeLabel);
-
-            const price = locker.type === "small" ? 7 : 10; // Assuming $7 for small, $10 for large
-            const priceLabel = document.createElement('div');
-            priceLabel.classList.add('price');
-            priceLabel.textContent = `$${price}`;
-            lockerDiv.appendChild(priceLabel);
-
-            lockerDiv.addEventListener('click', function() {
-                // Remove 'locker-selected' class from the previously selected locker
-                if (previouslySelectedLocker) {
-                    previouslySelectedLocker.classList.remove('locker-selected');
-                }
-                // Add 'locker-selected' class to the current clicked locker
-                this.classList.add('locker-selected');
-                previouslySelectedLocker = this; // Update the reference to the current locker
-
-                // Populate the dropdown with the locker number
-                lockerSelection.value = locker.lockerNumber;
-            });
-            rightPanel.appendChild(lockerDiv);
+        // Highlight the selected locker
+        document.querySelectorAll('.locker').forEach(locker => {
+            if(locker.dataset.lockerNumber == lockerNumber) {
+                locker.classList.add('locker-selected');
+            } else {
+                locker.classList.remove('locker-selected');
+            }
         });
-    } catch (error) {
-        console.error('Failed to fetch lockers:', error);
     }
+
+    // Populate lockers and attach event listeners
+    const response = await fetch('/populate-lockers');
+    const lockers = await response.json();
+    lockers.forEach(locker => {
+        // Create locker div and append to the right panel
+        const lockerDiv = document.createElement('div');
+        lockerDiv.classList.add('locker');
+        lockerDiv.dataset.lockerNumber = locker.lockerNumber; // Custom data attribute to store locker number
+        lockerDiv.innerHTML = `<div class='locker-number'>Locker ${locker.lockerNumber}</div><div class='size-label'>${locker.type.toUpperCase()}</div><div class='price'>$${locker.type === "small" ? 7 : 10}</div>`;
+        document.querySelector('.right-panel').appendChild(lockerDiv);
+
+        // Create option element and append to the dropdown
+        const option = document.createElement('option');
+        option.value = locker.lockerNumber;
+        option.dataset.type = locker.type; // Store locker type in option for easy access
+        option.textContent = `Locker ${locker.lockerNumber} - ${locker.type.toUpperCase()}`;
+        lockerSelection.appendChild(option);
+
+        // Click event on locker div
+        lockerDiv.addEventListener('click', () => {
+            lockerSelection.value = locker.lockerNumber; // Update dropdown
+            updateCheckInSummary(locker.lockerNumber, locker.type.toUpperCase(), locker.type === "small" ? 7 : 10);
+        });
+    });
+
+    // Change event on dropdown selection
+    lockerSelection.addEventListener('change', () => {
+        const selectedOption = lockerSelection.options[lockerSelection.selectedIndex];
+        updateCheckInSummary(selectedOption.value, selectedOption.dataset.type.toUpperCase(), selectedOption.dataset.type === "small" ? 7 : 10);
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const creditCardButton = document.getElementById('creditCardButton');
+    const creditCardForm = document.getElementById('creditCardForm');
+
+    // Toggle credit card form visibility
+    creditCardButton.addEventListener('click', function() {
+        creditCardForm.style.display = creditCardForm.style.display === "none" ? "block" : "none";
+        creditCardButton.textContent = creditCardForm.style.display === "block" ? "Hide Credit Card Form" : "Credit Card Information";
+    });
 });

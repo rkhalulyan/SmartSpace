@@ -100,7 +100,7 @@ def check_out():
 @app.route('/check-out-lockers', methods=['GET', 'POST'])
 def checkOutLockers():
     user = find_user_by_username(session.get('Username'))
-    name = user['Name']
+    name = user['Username']
     user_id = user['_id']
     users_lockers = get_user_lockers(user_id)
 
@@ -109,7 +109,7 @@ def checkOutLockers():
 @app.route('/lockers', methods=['GET', 'POST'])
 def lockers():
     user = find_user_by_username(session.get('Username'))
-    username = user['Name']
+    username = user['Username']
     return render_template("lockers.html", username=user)
 
 @app.route('/populate-lockers', methods=['GET'])

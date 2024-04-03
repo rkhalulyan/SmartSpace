@@ -65,3 +65,57 @@ body {
   border: 4px solid #FFD700;
   background-color: #27b127; /* Olive green background for contrast */
 }
+
+
+#checkInSummary {
+  border: 1px solid #ddd;
+  background-color: #e8f5e9; /* Light green background */
+  padding: 15px;
+  border-radius: 5px;
+  margin-top: 20px;
+  color: #333; /* Dark text for better contrast */
+}
+
+
+#checkInSummary p {
+  color: #666; /* Medium grey for text */
+  margin: 5px 0; /* Small margin for paragraph elements */
+}
+
+/* Additional styling for the Credit Card Form for consistency */
+#creditCardForm {
+  border: 1px solid #ddd;
+  background-color: #e8f5e9;
+  padding: 15px;
+  border-radius: 5px;
+  margin-top: 20px;
+  display: none; /* Initially hidden */
+}
+
+#creditCardForm label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+#creditCardForm input[type="text"] {
+  width: 90%;
+  padding: 8px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#creditCardButton, #submit {
+  background-color: #4CAF50; /* Green */
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: block; /* Make the buttons block level for full width */
+  margin-top: 20px;
+}
+
+#creditCardButton:hover, #submit:hover {
+  background-color: #45a049;
+}

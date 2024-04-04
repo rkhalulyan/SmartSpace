@@ -109,8 +109,8 @@ def checkOutLockers():
 @app.route('/lockers', methods=['GET', 'POST'])
 def lockers():
     user = find_user_by_username(session.get('Username'))
-    username = user['Username']
-    return render_template("lockers.html", username=user)
+    userID = str(user['_id'])
+    return render_template("lockers.html", userID=userID)
 
 @app.route('/populate-lockers', methods=['GET'])
 def populate_lockers():
@@ -125,7 +125,13 @@ def populate_lockers():
         ]
         lockers_collection.insert_many(lockers_data)
 
+                                     
+    # ObjectId() for customer was causing error, converting to string 
     lockers = list(lockers_collection.find({}, {'_id': 0}))
+    for locker in lockers:
+        if 'customer' in locker and locker['customer'] is not None:
+            locker['customer'] = str(locker['customer'])
+
     return jsonify(lockers)
 
 

@@ -65,29 +65,53 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
     }
 
+    currentUser = userID;
     // Populate lockers and attach event listeners
     const response = await fetch('/populate-lockers');
     const lockers = await response.json();
+    console.log(lockers);
     lockers.forEach(locker => {
+        console.log(locker);
         // Create locker div and append to the right panel
         const lockerDiv = document.createElement('div');
         lockerDiv.classList.add('locker');
         lockerDiv.dataset.lockerNumber = locker.lockerNumber; // Custom data attribute to store locker number
-        lockerDiv.innerHTML = `<div class='locker-number'>Locker ${locker.lockerNumber}</div><div class='size-label'>${locker.type.toUpperCase()}</div><div class='price'>$${locker.type === "small" ? 7 : 10}</div>`;
+   
+
+        let lockerStatus = ""; // Default, no additional label
+        let price = locker.type === "small" ? 7 : 10; // Example price determination
+        if (locker.customer) {
+            if (locker.customer === currentUser) {
+                lockerDiv.classList.add('your-locker'); // Apply a 'your-locker' CSS class for styling
+                lockerStatus = "<div class='locker-status'>Your Locker</div>";
+            } else {
+                lockerDiv.classList.add('rented-locker'); // Apply a 'rented-locker' CSS class
+                lockerStatus = "<div class='locker-status'>Rented</div>";
+            }
+        } else {
+            lockerDiv.classList.add('available-locker'); // Apply an 'available-locker' CSS class
+        }
+
+        lockerDiv.innerHTML = `
+        <div class='locker-number'>Locker ${locker.lockerNumber}</div>
+        <div class='size-label'>${locker.type.toUpperCase()}</div>
+        <div class='price'>$${price}</div>
+        ${lockerStatus}`; // Include the locker status label in the inner HTML
+    
         document.querySelector('.right-panel').appendChild(lockerDiv);
-
         // Create option element and append to the dropdown
-        const option = document.createElement('option');
-        option.value = locker.lockerNumber;
-        option.dataset.type = locker.type; // Store locker type in option for easy access
-        option.textContent = `Locker ${locker.lockerNumber} - ${locker.type.toUpperCase()}`;
-        lockerSelection.appendChild(option);
-
-        // Click event on locker div
-        lockerDiv.addEventListener('click', () => {
-            lockerSelection.value = locker.lockerNumber; // Update dropdown
-            updateCheckInSummary(locker.lockerNumber, locker.type.toUpperCase(), locker.type === "small" ? 7 : 10);
+        if (!locker.customer) {
+            const option = document.createElement('option');
+            option.value = locker.lockerNumber;
+            option.dataset.type = locker.type; // Store locker type in option for easy access
+            option.textContent = `Locker ${locker.lockerNumber} - ${locker.type.toUpperCase()}`;
+            lockerSelection.appendChild(option);
+             // Click event on locker div
+            lockerDiv.addEventListener('click', () => {
+                lockerSelection.value = locker.lockerNumber; // Update dropdown
+                updateCheckInSummary(locker.lockerNumber, locker.type.toUpperCase(), locker.type === "small" ? 7 : 10);
         });
+        }
     });
 
     // Change event on dropdown selection

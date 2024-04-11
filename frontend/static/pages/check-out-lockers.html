@@ -1,11 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    Hello {{ username }} here are your lockers {{ lockers }}!
-</body>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Checkout.css') }}"> 
+  </head>
+
+  <body>
+      <h2>Select lockers you wish to check out of</h2>
+
+    <div class="locker-container">
+      <!-- Example lockers for testing -->
+      <div class="locker" data-locker-id="L002">
+        L002
+        <input type="checkbox" class="locker-checkbox" value="L002">
+      </div>
+
+      <div class="locker" data-locker-id="L006">
+        L006
+        <input type="checkbox" class="locker-checkbox" value="L006"/>
+      </div>
+      
+      <div class="locker" data-locker-id="L007">
+        L007
+        <input type="checkbox" class="locker-checkbox" value="L007"/>
+      </div>
+    </div>
+
+    <div id="selected-lockers" class="scroll-panel">
+      <!-- Selected lockers will appear here -->
+    </div>
+
+    <button id="checkout-btn" class="check-out-btn">Checkout</button>
+
+    <div id="checkout-message" class="hidden">
+      <!-- Checkout message will appear here -->
+    </div>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='script.js') }}"></script>
+  </body>
 </html>

@@ -1,7 +1,6 @@
 from flask import current_app as app
 from bson.objectid import ObjectId
 
-
 def find_user_by_username(username):
     db = app.config['db']
     return db['Users'].find_one({'Username': username})
@@ -10,15 +9,15 @@ def find_user_by_username_and_pin(username, pin):
     db = app.config['db']
     return db['Users'].find_one({'Username': username, 'Pin': pin})
 
-def create_user(full_name, username, pin):
+def create_user(username, pin):
     db = app.config['db']
-    user = {'Name': full_name, 'Username': username, 'Pin': pin}
+    user = {'Username': username, 'Pin': pin, 'LockersRented': []}
     db['Users'].insert_one(user)
     return user
 
 def get_user_lockers(user_id):
-    app.logger.info(f"in get_user_lockers, here is the user_id: {user_id}, it is of type {type(str(user_id))}")
     db = app.config['db']
+    app.logger.info(f"in get_user_lockers, here is the user_id: {user_id}, it is of type {type(str(user_id))}")
     pipeline = [
         {
             "$match": {
@@ -47,3 +46,14 @@ def get_user_lockers(user_id):
     app.logger.info(f"here is the result {result}")
     return result[0]['LockerNumbers'] if result else []
 
+def set_user_locker(locker_number, customer_id):
+   db = app.config['db']
+   locker = db['Locker'].find_one({'lockerNumber': locker_number})
+   locker_id = locker['_id']
+   db['Users'].update_one(
+       { '_id': ObjectId(customer_id)},
+       {'$addToSet': 
+            {'LockersRented': ObjectId(locker_id)}
+        }
+   )
+   app.logger.info(f"IN USER.PY\ncustomer id: {customer_id} ==> {type(customer_id)}\nlocker_number: {locker_id} ==> {type(locker_id)}")

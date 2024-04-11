@@ -47,6 +47,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const summaryLockerNumber = document.getElementById('summaryLockerNumber');
     const summaryLockerSize = document.getElementById('summaryLockerSize');
     const summaryTotalCost = document.getElementById('summaryTotalCost');
+    const submitButton = document.getElementById('submit');
 
     // Function to update check-in summary and highlight selected locker
     function updateCheckInSummary(lockerNumber, lockerType, lockerCost) {
@@ -65,7 +66,8 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
     }
 
-    currentUser = userID;
+    const currentUser = userID;
+    let price_global;
     // Populate lockers and attach event listeners
     const response = await fetch('/populate-lockers');
     const lockers = await response.json();
@@ -80,6 +82,8 @@ document.addEventListener('DOMContentLoaded', async function() {
 
         let lockerStatus = ""; // Default, no additional label
         let price = locker.type === "small" ? 7 : 10; // Example price determination
+        price_global = price;
+    
         if (locker.customer) {
             if (locker.customer === currentUser) {
                 lockerDiv.classList.add('your-locker'); // Apply a 'your-locker' CSS class for styling
@@ -119,6 +123,17 @@ document.addEventListener('DOMContentLoaded', async function() {
         const selectedOption = lockerSelection.options[lockerSelection.selectedIndex];
         updateCheckInSummary(selectedOption.value, selectedOption.dataset.type.toUpperCase(), selectedOption.dataset.type === "small" ? 7 : 10);
     });
+    
+    // Handles submit button logic
+    submitButton.addEventListener('click', async function() {
+        selectedLocker = lockerSelection.value;
+        if (selectedLocker){
+            await assignLocker(userID, selectedLocker, price_global)
+        } else {
+            console.log('Please select a locker!')
+        }
+    });
+
 });
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -131,3 +146,38 @@ document.addEventListener('DOMContentLoaded', function() {
         creditCardButton.textContent = creditCardForm.style.display === "block" ? "Hide Credit Card Form" : "Credit Card Information";
     });
 });
+
+async function assignLocker(userID, lockerSelection, price_global) {
+    const credentials = {
+        user_id: userID,
+        lockerNumber: lockerSelection
+    };
+    try {
+        const response = await fetch("/submit-check-in", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json' 
+            },
+            body: JSON.stringify(credentials)
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log('Success:', result);
+        alert(`Locker assigned successfully!\nTotal Amount Charged: $${price_global} Dollars!`);
+
+
+        console.log("result" + result);
+        console.log("credentials " + credentials);
+
+        window.location.href = '/'; 
+
+        return result;
+    } catch (error) {
+        console.error('Error during fetch operation:', error);
+        alert('Failed to assign locker.');
+    }
+}

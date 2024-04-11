@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, flash, url_for, session, jsonify
 from pymongo import MongoClient
-from models.user import find_user_by_username, create_user, get_user_lockers, find_user_by_username_and_pin
+from models.user import find_user_by_username, create_user, get_user_lockers, find_user_by_username_and_pin, set_user_locker
+from models.locker import set_locker_customer
 import os
 import time
 
@@ -11,7 +12,7 @@ app = Flask(
     static_folder='/frontend/static'  
     
 )
-app.secret_key = 'your_secret_key'  # Needed for flash messages
+app.secret_key = 'your_secret_key' 
 
 if __name__ == '__main__':
     app.logger.setLevel('DEBUG')
@@ -53,14 +54,14 @@ def checkIn():
                 return redirect(url_for('checkIn'))
             # user exists but pin does match, log in 
             elif find_user_by_username(username) and find_user_by_username_and_pin(username, pin):
-                flash('Logging you in!', 'success')
                 session['Username'] = username
+                session['Message'] = 'Logging you in...'
                 return redirect(url_for('lockers'))
             # user doesnt exist create user 
             else:
-                create_user(full_name, username, pin)
-                flash('Account created successfully!', 'success')
+                create_user(username, pin)
                 session['Username'] = username
+                session['Message'] = 'Account created successfully!'
                 return redirect(url_for('lockers'))
             
         except ValueError:
@@ -110,7 +111,9 @@ def checkOutLockers():
 def lockers():
     user = find_user_by_username(session.get('Username'))
     userID = str(user['_id'])
-    return render_template("lockers.html", userID=userID)
+    username = session.get('Username')
+    message = session.get('Message')
+    return render_template("lockers.html", username=username, message=message, userID=userID)
 
 @app.route('/populate-lockers', methods=['GET'])
 def populate_lockers():
@@ -134,5 +137,25 @@ def populate_lockers():
 
     return jsonify(lockers)
 
+@app.route('/submit-check-in', methods=['POST'])
+def submitCheckIn():
+    try:
+        credentials = request.get_json()
+        if not credentials:
+            return jsonify({'error': 'No data provided'}), 400
 
 
+        customer_id = str(credentials["user_id"])
+        locker_number = int(credentials["lockerNumber"])
+        app.logger.info(f"IN APP.PY\ncustomer id: {customer_id} ==> {type(customer_id)}\nlocker_number: {locker_number} ==> {type(locker_number)}")
+        set_locker_customer(locker_number, customer_id)
+        set_user_locker(locker_number, customer_id)
+
+        return jsonify({
+                        'status': 'success',
+                         'message': 'Check-in processed successfully'
+                         }), 200
+    
+    except Exception as e:
+        app.logger.error(f"Error processing check-in: {str(e)}")
+        return jsonify({'error': 'Failed to process check-in'}), 500

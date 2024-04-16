@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lockers Rented</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Checkout.css') }}">
+</head>
+<body>
+    <div class="left-panel">
+        <!-- Additional content such as forms or information could go here -->
+    </div>
+    <div class="right-panel">
+        <div class="locker-container">
+            {% if lockers %}
+                {% for locker in lockers %}
+                <div class="locker-wrapper">
+                    <div class="locker">
+                        <div class="locker-details">
+                            <span class="locker-number">Locker Number: {{ locker.lockerNumber }}</span>
+                            <span class="size-label">Type: {{ locker.type }}</span>
+                        </div>
+                    </div>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="locker{{ locker.lockerNumber }}">
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No lockers rented.</p>
+            {% endif %}
+        </div>
+        <button id="selectAllButton" class="button">Select All</button>
+        <button id="checkoutButton" class="button">Checkout</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectAllButton = document.getElementById('selectAllButton');
+            selectAllButton.addEventListener('click', function() {
+                const checkboxes = document.querySelectorAll('.locker-wrapper input[type="checkbox"]');
+                const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = !allChecked;
+                });
+            });
+    
+            const checkoutButton = document.getElementById('checkoutButton');
+            checkoutButton.addEventListener('click', function() {
+                const selectedCheckboxes = document.querySelectorAll('.locker-wrapper input[type="checkbox"]:checked');
+                const selectedLockerNumbers = Array.from(selectedCheckboxes).map(cb => cb.id.replace('locker', ''));
+                var user_id = "{{ session['user_id'] }}";
+                
+                fetch('/submit-checkout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ lockerNumbers: selectedLockerNumbers, userId: user_id })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        alert(data.message); // Alert the user with the message from the server
+                        window.location.href = '/'; // Redirect to the home page
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        });
+    </script>
+    
+</body>
+</html>

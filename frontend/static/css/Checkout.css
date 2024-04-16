@@ -1,110 +1,108 @@
-/* Styling for the checkout page */
 body {
-    font-family: American Typewriter;
-    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #eef1f5;
+  }
+
+  
+  .left-panel {
+    flex: 1;
+    padding: 20px;
+    max-width: 300px;
   }
   
-  h2 {
-    font-family: American Typewriter;
-    text-align: center;
+  .right-panel {
+    flex: 2;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    height: 90vh;
+    background-color: #f0f0f0;
   }
   
   .locker-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center; /* Center the locker items horizontally */
-  align-items: start; /* Align the items at the start vertically */
-  max-height: 450px;
-  overflow-y: auto;
-  gap: 40px;
-  padding: 40px;
-  background: #eaeaea;
-  border-radius: 8px;
-  margin: 0 auto; /* Center the locker container itself */
-  width: fit-content; /* Shrink the width to fit its children */
-  position: relative;
-  margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+  }
+  
+  .locker-wrapper {
+    width: 220px; /* Larger lockers */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
   }
   
   .locker {
-  width: 100px; /* Fixed width for lockers */
-  height: 100px; /* Fixed height for lockers */
-  border: 5px solid #919191;
-  background-color: #c7c7c7;
-  padding: 185px 90px;
-  text-align: center;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative; 
-  }
-  
-  .locker-checkbox {
-  position: absolute;
-  bottom: -30px; /* Position the checkbox below the locker */
-  left: 50%;
-  transform: translateX(-50%) scale(1.6); /* Scale and center the checkbox */
-  -webkit-transform: translateX(-50%) scale(1.6);
-  margin: 0; /* Remove any default margin */
-  }
-  
-  .locker:before {
-  content: '';
-  position: absolute;
-  top: 15px; /* Position line above the lockers */
-  left: 50%; /* Start at the center of the container */
-  transform: translateX(-50%); /* Shift to the left by half its width to center */
-  width: 80%; 
-  height: 7px;
-  background: linear-gradient(to bottom, #919191 50%, transparent 50%, #919191 50%); /* Creates double line effect */
-  background-size: 100% 4px;
-  }
-  
-  .locker.selected {
-  border-color: #4CAF50;
-  background-color: #76e0a2;
+    height: 350px; /* Larger lockers */
+    background: linear-gradient(145deg, #ccc, #ddd);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
   }
   
   .locker:hover {
-  border-color: #4CAF50;
+    transform: scale(1.03);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.2);
   }
   
-  .check-out-btn {
-  font-family: American Typewriter;
-  display: block;
-  width: 200px;
-  padding: 10px;
-  margin: 0 auto;
-  font-size: 16px;
-  background-color: #c4c4c4;
-  color: black;
-  border: 8px;
-  border-color: black;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  .locker input[type="checkbox"]:checked ~ .locker {
+    border-color: #4CAF50; /* Green outline when selected */
   }
   
-  .check-out-btn:hover {
-  background-color: #369b47;
+  .checkbox-container {
+    padding-top: 10px;
   }
   
-  .scroll-panel {
-  overflow-y: auto;
-  height: 150px;
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 20px;
+  .locker input[type="checkbox"] {
+    appearance: none;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    background: transparent;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 20px;
+    outline: none;
+    transition: background-color 0.3s, border-color 0.3s;
   }
   
-  .reserved-locker {
-  margin: 5px 0;
-  padding: 5px;
-  background: #e6f2eb;
-  border-left: 5px solid #4CAF50;
-  border-radius: 5px;
+  .locker input[type="checkbox"]:checked {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
   }
+  
+  .button {
+    margin-top: 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .button:hover {
+    background-color: #45a049;
+  }
+  

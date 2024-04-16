@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, redirect, flash, url_for, session, jsonify
 from pymongo import MongoClient
-from models.user import find_user_by_username, create_user, get_user_lockers, find_user_by_username_and_pin, set_user_locker
+from models.user import find_user_by_username, create_user, find_user_by_username_and_pin, set_user_locker
 from models.locker import set_locker_customer
+from bson.objectid import ObjectId
 import os
 import time
 
@@ -69,10 +70,8 @@ def checkIn():
              
     return render_template('check-in.html')
 
-@app.route('/check-out', methods=['GET','POST'])
+@app.route('/check-out', methods=['GET', 'POST'])
 def check_out():
-
-    app.logger.info("in /checkout")
     if request.method == 'POST':
         username = request.form.get('username')
         pin_parts = [
@@ -82,30 +81,86 @@ def check_out():
             request.form.get('pin4'),
             request.form.get('pin5')
         ]
-
+        pin = ''.join(pin_parts)
         try:
-                pin = int(''.join(pin_parts))  
-                if find_user_by_username_and_pin(username, pin):
-                    session['Username'] = username
-                    return redirect(url_for('checkOutLockers'))
-                else:
-                    flash('Username or PIN was incorrect, please try again!', 'error')
-
+            pin = int(pin)  # Convert PIN to integer
+            user = find_user_by_username_and_pin(username, pin)
+            if user:
+                session['Username'] = username
+                session['user_id'] = str(user['_id'])  # Assuming '_id' is how you identify users uniquely
+                return redirect(url_for('get_lockers'))
+            else:
+                flash('Username or PIN was incorrect, please try again!', 'error')
         except ValueError:
-                flash('Invalid PIN format', 'error')
-        else:
-            flash('Please fill in all PIN fields', 'error')
+            flash('Invalid PIN format', 'error')
+        return redirect(url_for('check_out'))
+    else:
+        return render_template("check-out.html")
+    
+@app.route('/get_lockers')
+def get_lockers():
+    username = session.get('Username')
+    if not username:
+        flash('User not logged in.', 'error')
+        return redirect(url_for('check_out'))
 
-    return render_template("check-out.html") 
+    user = find_user_by_username(username)
+    if not user:
+        flash('User not found', 'error')
+        return redirect(url_for('check_out'))
 
-@app.route('/check-out-lockers', methods=['GET', 'POST'])
-def checkOutLockers():
-    user = find_user_by_username(session.get('Username'))
-    name = user['Username']
-    user_id = user['_id']
-    users_lockers = get_user_lockers(user_id)
+    locker_ids = user.get('LockersRented', [])
+    lockers = list(db.Locker.find({"_id": {"$in": locker_ids}}))
 
-    return render_template("check-out-lockers.html", username=name, lockers=users_lockers)
+    lockers_data = [{
+        "lockerNumber": locker.get("lockerNumber"),
+        "type": locker.get("type")
+    } for locker in lockers]
+
+    return render_template('checkout-lockers.html', lockers=lockers_data)
+
+def get_locker_ids_from_numbers(locker_numbers):
+    locker_ids = []
+    for number in locker_numbers:
+        locker = lockers_collection.find_one({"lockerNumber": int(number)})
+        app.logger.info(locker)
+        if locker:
+            locker_ids.append(locker['_id'])
+    return locker_ids
+
+
+@app.route('/submit-checkout', methods=['POST'])
+def submit_checkout():
+    app.logger.info("In /submit-checkout")
+    data = request.get_json()
+    locker_numbers = data['lockerNumbers']
+    user_id = data['userId']
+    app.logger.info(data)
+
+    try:
+        # Update lockers to remove customer
+        lockers_collection.update_many(
+            {'lockerNumber': {'$in': [int(num) for num in locker_numbers]}},
+            {'$set': {'customer': None}}
+        )
+
+        # Get ObjectIds corresponding to the locker numbers
+        locker_ids = get_locker_ids_from_numbers(locker_numbers)
+
+        # Perform the update to remove these lockers from the user's rented list
+        result = users_collection.update_one(
+            {'_id': ObjectId(user_id)},
+            {'$pull': {'LockersRented': {'$in': locker_ids}}}
+        )
+        app.logger.info(ObjectId(user_id))
+        app.logger.info([int(num) for num in locker_numbers])
+        app.logger.info(locker_ids)
+
+        return jsonify({'message': 'Checkout successful'}), 200
+
+    except Exception as e:
+        app.logger.error(f'Error during checkout: {e}')
+        return jsonify({'error': 'Checkout failed'}), 500
 
 @app.route('/lockers', methods=['GET', 'POST'])
 def lockers():
